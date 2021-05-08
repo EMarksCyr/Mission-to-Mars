@@ -4,10 +4,28 @@ from splinter import Browser
 from bs4 import BeautifulSoup as soup
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+import datetime as dt
 
-#Set executable path and set up the url for scraping
-executable_path = {'executable_path': ChromeDriverManager().install()}
-browser = Browser('chrome', **executable_path, headless=False)
+#Add a function that initializes the browser, creates a data dictionaru and ends the WebDriver and returns the scraped data
+def scrape_all():
+    #Set executable path and set up the url for scraping
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    browser = Browser('chrome', **executable_path, headless=True)
+
+    #Set the news title and paragraph title variables (the function will return two values)
+    news_title, news_paragraph = mars_news(browser)
+
+    #Run all scraping functions and create a data dictionary to store the results in
+    data = {
+        "news_title": news_title,
+        "news_paragraph": news_paragraph,
+        "featured_image": featured_image(browser),
+        "facts": mars_facts(),
+        "last_modified": dt.datetime.now()
+    }
+    #stop the webdriver and return the data
+    browser.quit()
+    return data
 
 ### Latest News
 
@@ -91,7 +109,7 @@ def mars_facts():
         df = pd.read_html('https://galaxyfacts-mars.com')[0]
     except BaseException:
         return None
-        
+
     #assing columns to the new DataFrame for clarity
     df.columns=['description', 'Mars', 'Earth']
     #use set_index() to turn the description column into the index, inplace=True means the updated index will remain in place
@@ -100,13 +118,7 @@ def mars_facts():
     #in the return statement, use the pandas function, .to_html() to convert the Dataframe back into HTML-ready code
     return df.to_html()
 
-#end the splinter session
-browser.quit()
-
-
-#jupyter notebook was good to write the code in testable chunks
-#but it cannot be run automatically in jupyter notebook so it has
-#to be converted into a .py file
-#to do so: file>download as> Python(.py)
-#if you get a warning click "Keep" to continue downloading
-
+#Lastly, tell Flask that our script is complete and ready for action
+if __name__ == "__main__":
+    # If running as script, print scraped data
+    print(scrape_all())

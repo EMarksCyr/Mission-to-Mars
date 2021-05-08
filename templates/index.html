@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission to Mars</title>
+    <link 
+        rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Mission to Mars</h1>
+            <p><a class="btn btn-primary btn-lg" href="/scrape"
+                role="button">Scrape New Data</a></p>
+        </div>
+        <!-- Mars News -->
+        <div class="row" id="mars-news">
+            <!-- use 12 columns scaled to a midsized desktop display-->
+            <div class="col-md-12">
+            <!-- Tell Bootstrap we want out content displayed as media-->
+                <div class="media">
+                    <!-- insert the media within the body-->
+                    <div class="media-body">
+                        <h2>Latest Mars News</h2>
+                        <!-- use news_title from our mongo db and apply the media-body bootstrap styling-->
+                        <h4 class="media-heading">{{mars.news_title}}</h4>
+                        <!-- insert the news teaser into paragraph tags under the header-->
+                        <p>{{mars.news_paragraph}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Featured Image -->
+        <!-- Give an id for later customization -->
+        <div class="row" id="mars-featured-image">
+            <!-- The total columns must equal 12 but we'll use 8 for the image so we have 4 remaining for the table data -->
+            <div class="col-md-8">
+                <h2>Featured Mars Image</h2>
+                <!-- To insert an image in the img tag you need to add the source then class it as responsive, this is a built in Bootstrap component -->
+                <img src="{{ mars.featured_image }}" class="img-responsive" alt="Responsive image">
+            </div>
+            <!-- Mars Facts -->
+            <!-- use the remaining 4 columns -->
+            <div class="col-md-4">
+                <div class="row" id="mars-facts">
+                    <h4>Mars Facts</h4>
+                    <!-- reference the facts table in the mars document and tell the web browser that it doesn't contain anything malicious -->
+                    {{ mars.facts | safe }}
+                </div>
+        </div>
+    </div>    
+</body>
+</html>

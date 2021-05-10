@@ -14,13 +14,13 @@
     <div class="container">
         <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
-            <p><a class="btn btn-primary btn-lg" href="/scrape"
+            <p><a class="btn btn-default btn-lg btn-square" href="/scrape"
                 role="button">Scrape New Data</a></p>
         </div>
         <!-- Mars News -->
         <div class="row" id="mars-news">
             <!-- use 12 columns scaled to a midsized desktop display-->
-            <div class="col-md-12">
+            <div class="col-xs-12">
             <!-- Tell Bootstrap we want out content displayed as media-->
                 <div class="media">
                     <!-- insert the media within the body-->
@@ -38,14 +38,14 @@
         <!-- Give an id for later customization -->
         <div class="row" id="mars-featured-image">
             <!-- The total columns must equal 12 but we'll use 8 for the image so we have 4 remaining for the table data -->
-            <div class="col-md-8">
+            <div class="col-xs-12 col-md-8">
                 <h2>Featured Mars Image</h2>
                 <!-- To insert an image in the img tag you need to add the source then class it as responsive, this is a built in Bootstrap component -->
                 <img src="{{ mars.featured_image }}" class="img-responsive" alt="Responsive image">
             </div>
             <!-- Mars Facts -->
             <!-- use the remaining 4 columns -->
-            <div class="col-md-4">
+            <div class="col-xs-12 col-md-4">
                 <div class="row" id="mars-facts">
                     <h4>Mars Facts</h4>
                     <!-- reference the facts table in the mars document and tell the web browser that it doesn't contain anything malicious -->
@@ -54,7 +54,7 @@
         </div>
         <!-- Hemisphere images -->
         <div class="row" id="hemisphere-images" >
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <h2 class="text-center">Mars Hemispheres</h2>
                 {% for hemisphere in mars.hemispheres %}
                 <figure class="col-xs-3 col-md-6 figure">

@@ -117,7 +117,7 @@ def mars_facts():
     df.set_index('description', inplace=True)
 
     #in the return statement, use the pandas function, .to_html() to convert the Dataframe back into HTML-ready code
-    return df.to_html(classes="table table-striped")
+    return df.to_html(classes="table")
 
 
 def hemi_images(browser):

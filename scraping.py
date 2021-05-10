@@ -21,7 +21,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemispheres": hemi_images(browser)
     }
     #stop the webdriver and return the data
     browser.quit()
@@ -118,7 +119,48 @@ def mars_facts():
     #in the return statement, use the pandas function, .to_html() to convert the Dataframe back into HTML-ready code
     return df.to_html()
 
+
+def hemi_images(browser):
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+    hemisphere_image_urls = []
+
+    # Parse the resulting html (new page opened) with soup
+    html = browser.html
+    hemi_soup = soup(html, 'html.parser')
+
+    #Go into the dom object with all of the images
+    main_page = hemi_soup.find('div', class_='full-content')
+
+    #Within the main_page, get all of the info boxes for the images
+    description_set = main_page.find_all('div', class_= 'description')
+
+    #go into the set of descriptions and pull each title and append them to the list
+    for i in range(len(description_set)):
+        description = description_set[i]
+        #pull clickable links to full images
+        wde_url = browser.find_by_tag('h3')[i]
+        
+        title = description.find('h3').get_text()
+        
+        #Click full image link and grab sample link url
+        wde_url.click()
+        html = browser.html
+        fullimg_soup = soup(html, 'html.parser')
+        sample_container = fullimg_soup.find('div', class_='downloads')
+        image = sample_container.find('a')
+        
+        #Add title and image link to dictionary, append dict to list
+        a = {'title': title, 'image': f"{url}{image['href']}"}
+        hemisphere_image_urls.append(a)
+        browser.back()
+
+    return hemisphere_image_urls
+
+
 #Lastly, tell Flask that our script is complete and ready for action
 if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
+
